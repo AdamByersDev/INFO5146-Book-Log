@@ -1,0 +1,32 @@
+{
+  "name": "booknook",
+  "version": "1.0.0",
+  "description": "A book log",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdamByersDev/INFO5146-Book-Log.git"
+  },
+  "license": "ISC",
+  "author": "AdamByersDev",
+  "type": "module",
+  "scripts": {
+    "start": "parcel assets/html/*.html",
+    "build": "parcel build --dist-dir docs --public-url /INFO5146-Book-Log/ assets/html/*.html",
+    "dev:build": "parcel build --dist-dir docs --no-content-hash assets/html/*.html",
+    "dev:run": "npm run dev:build && npm run dev:start",
+    "dev:start": "parcel serve --dist-dir docs assets/html/*.html",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "firebase": "^11.3.1",
+    "firebase-admin": "^13.1.0",
+    "gh-pages": "^6.3.0",
+    "loglevel": "^1.9.2",
+    "parcel": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0"
+  }
+}
