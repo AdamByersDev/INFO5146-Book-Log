@@ -28,6 +28,10 @@ p, button, input {
 h1 {
   font-size: 3.2rem;
 }
+h3 {
+  font-size: 2.2rem;
+  line-height: 2.4rem;
+}
 header {
   position: fixed;
   top: 0;
@@ -66,4 +70,45 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#logSection {
+  background-color: var(--bg2);
+  color: var(--bg2-text);
+  padding: 0.8rem 0.8rem 0;
+  width: 100%;
+  && ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.8rem;
+    && li {
+      background-color: var(--bg1);
+      color: var(--bg1-text);
+      padding: 0.8rem;
+      && div {
+        display: grid;
+        grid-template-columns: auto 9.2rem;
+        && :nth-child(even) {
+          text-align: right;
+        }
+        && p:first-of-type {
+          color: var(--accent);
+          font-size: 2rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          padding-top: 0.6rem;
+        }
+        && p:nth-of-type(2) {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  && span {
+    height: 1.6rem;
+    display: block;
+    background-color: var(--bg4);
+    margin: 0.8rem 1.6rem 0;
+  }
 }
