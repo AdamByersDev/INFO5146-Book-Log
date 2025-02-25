@@ -9,12 +9,12 @@ const email = JSON.parse(localStorage.getItem("email"));
 const userId = JSON.parse(localStorage.getItem("userID"));
 
 if(!email){
-  window.location.href = "/";
+  window.location.href = "index.html";
 }
 
 document.getElementById('logout').addEventListener('click', () => {
   localStorage.removeItem("email");
-  window.location.href = "/"
+  window.location.href = "index.html"
 });
 
 async function getLogsFromFirestore() {
