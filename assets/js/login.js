@@ -17,6 +17,7 @@ document.getElementById('login').addEventListener('click', () => {
   signInWithPopup(auth, provider).then((result) => {
     const user = result.user;
     localStorage.setItem("email", JSON.stringify(user.email));
+    localStorage.setItem("userID", JSON.stringify(user.uid));
     window.location = "logs.html"
   })
 });
