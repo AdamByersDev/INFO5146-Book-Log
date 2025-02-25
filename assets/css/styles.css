@@ -14,11 +14,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Domine", serif;
 }
 html {
   font-size: 62.5%;
   line-height: 1.6;
-  font-family: "Domine", serif;
   background-color: var(--bg4);
   color: var(--bg4-text);
 }
