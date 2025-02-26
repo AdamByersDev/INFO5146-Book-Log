@@ -22,11 +22,14 @@ html {
   background-color: var(--bg4);
   color: var(--bg4-text);
 }
-p, button, input {
+p, button, input, select, textarea {
   font-size: 1.6rem;
 }
 h1 {
   font-size: 3.2rem;
+}
+h2 {
+  font-size: 2.4rem;
 }
 h3 {
   font-size: 2.2rem;
@@ -76,6 +79,26 @@ main {
   color: var(--bg2-text);
   padding: 0.8rem 0.8rem 0;
   width: 100%;
+
+  && div:first-of-type {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    padding-bottom: 0.8rem;
+    && select {
+      background-color: var(--bg1);
+      color: var(--bg1-text);
+      padding: 0.4rem;
+      border: 0.4rem solid transparent;
+      &&:hover {
+        border: 0.4rem solid #2C1F1780;
+      }
+      &&:focus-visible {
+        border: 0.4rem solid #2C1F1780;
+        outline: 0.2rem solid #ffffff;
+      }
+    }
+  }
   && ul {
     list-style: none;
     display: grid;
@@ -94,10 +117,10 @@ main {
         && p:first-of-type {
           color: var(--accent);
           font-size: 2rem;
+          line-height: 2.4rem;
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
-          padding-top: 0.6rem;
         }
         && p:nth-of-type(2) {
           font-weight: bold;
