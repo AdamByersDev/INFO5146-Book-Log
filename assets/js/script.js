@@ -1,6 +1,6 @@
 import log from 'loglevel';
 import { db } from './firebase';
-import { /* addDoc, */ collection, getDocs, orderBy, query/* , Timestamp */ } from '@firebase/firestore';
+import { addDoc, collection, getDocs, orderBy, query, Timestamp } from '@firebase/firestore';
 
 log.setLevel("info");
 log.info("Application started");
@@ -8,6 +8,10 @@ log.info("Application started");
 let logList;
 let authorFilter;
 let genreFilter;
+let add;
+let closeAdd;
+let addBookSection;
+let addBook;
 
 let logs;
 let authors = [];
@@ -25,7 +29,7 @@ async function getLogsFromFirestore() {
   return await getDocs(q);
 }
 
-/* async function addLogToFirestore(title, author, genre, rating, thoughts) {
+async function addLogToFirestore(title, author, genre, rating, thoughts) {
   let newLog = await addDoc(collection(db, "logs", userId, "logs"), {
     title: title,
     author: author,
@@ -35,7 +39,7 @@ async function getLogsFromFirestore() {
     addTime: Timestamp.now()
   });
   return newLog.id;
-} */
+}
 
 async function renderLogs() {
   if (!logs) {
@@ -150,12 +154,70 @@ function createBookItem(id, title, author, genre, rating, thoughts, newLog = fal
   }
 }
 
+function sanitizeInput(input) {
+  const replacements = {
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '&': '&amp;',
+    '/': '&#x2F;'
+  };
+  
+  return input.replace(/[<>"'&/]/g, c => replacements[c]);
+}
+
+async function addNewBook(e) {
+  e.preventDefault();
+  let formData = new FormData(e.target);
+  let values = Object.fromEntries(formData.entries());
+  let title = sanitizeInput(values.title.trim());
+  let author = sanitizeInput(values.author.trim());
+  let genre = sanitizeInput(values.genre.trim());
+  let rating = parseInt(values.rating);
+  let thoughts = sanitizeInput(values.thoughts.trim());
+
+  let error = false;
+
+  if (title.length < 1) {
+    error = true;
+  } else if (author.length < 1) {
+    error = true;
+  } else if (genre.length < 1) {
+    error = true;
+  } else if (thoughts.length < 1) {
+    error = true;
+  }
+
+  if (error) {
+    alert('You must fill in all fields.');
+    return;
+  }
+  addBookSection.style.display = 'none';
+  addBook.reset();
+  let id = await addLogToFirestore(title, author, genre, rating, thoughts);
+  logs.push({
+    id: id,
+    data: {
+      title: title,
+      author: author,
+      genre: genre,
+      rating: parseInt(rating),
+      thoughts: thoughts
+    }
+  });
+
+  createBookItem(id, title, author, genre, rating, thoughts, true);
+}
+
 window.addEventListener('load', () => {
   document.getElementById('logout').addEventListener('click', () => {
     localStorage.removeItem("email");
     window.location.href = "index.html"
   });
+
   logList = document.getElementById('logList');
+
   authorFilter = document.getElementById('authorFilter');
   authorFilter.addEventListener('change', () => {
     renderLogs();
@@ -164,6 +226,18 @@ window.addEventListener('load', () => {
   genreFilter.addEventListener('change', () => {
     renderLogs();
   });
+
+  add = document.getElementById('add').addEventListener('click', () => {
+    addBookSection.style.display = 'block';
+  });
+  closeAdd = document.getElementById('closeAdd').addEventListener('click', () => {
+    addBookSection.style.display = 'none';
+    addBook.reset();
+  })
+  addBookSection = document.getElementById('addBookSection');
+  addBook = document.getElementById('addBook');
+  addBook.addEventListener('submit', addNewBook)
+
   renderLogs();
 });
 

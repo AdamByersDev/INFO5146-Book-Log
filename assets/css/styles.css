@@ -22,7 +22,7 @@ html {
   background-color: var(--bg4);
   color: var(--bg4-text);
 }
-p, button, input, select, textarea {
+p, button, input, select, textarea, label {
   font-size: 1.6rem;
 }
 h1 {
@@ -110,7 +110,7 @@ main {
       padding: 0.8rem;
       && div {
         display: grid;
-        grid-template-columns: auto 9.2rem;
+        grid-template-columns: auto 12.2rem;
         && :nth-child(even) {
           text-align: right;
         }
@@ -133,5 +133,87 @@ main {
     display: block;
     background-color: var(--bg4);
     margin: 0.8rem 1.6rem 0;
+  }
+}
+.formSection {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #00000080;
+  padding: 0.8rem;
+  && form {
+    padding: 0.8rem;
+    background-color: var(--bg1);
+    color: var(--bg1-text);
+    border: 0.4rem solid var(--bg2);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 60rem;
+    margin: auto;
+    margin-top: 7.2rem;
+    && label, && div {
+      padding: 0 0 0 0.4rem;
+      background-color: var(--bg4);
+      color: var(--bg4-text);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 0.2rem solid var(--bg4-text);
+      && input, && select, && textarea {
+        resize: none;
+        padding: 0.8rem 0.4rem;
+        flex-grow: 1;
+        color: var(--bg4-text);
+        background-color: transparent;
+        border: transparent;
+        outline: none;
+        &&:hover {
+          background-color: #ffffff44;
+        }
+        &&:focus {
+          background-color: #ffffff80;
+        }
+      }
+    }
+    && div {
+      padding: 0;
+    }
+    && textarea {
+      height: 7.6rem;
+    }
+    && button {
+      text-align: left;
+      border: 0.2rem solid var(--bg4-text);
+      background-color: var(--bg2);
+      color: var(--bg2-text);
+      padding: 0.8rem;
+      &&:hover {
+        background-color: hsl(19, 64%, 50%);
+      }
+      &&:focus-visible {
+        background-color: hsl(19, 64%, 50%);
+        outline: 0.2rem solid #ffffff;
+      }
+      &&:active {
+        background-color: hsl(19, 64%, 30%);
+      }
+    }
+    && div:first-of-type {
+      background-color: transparent;
+      border: none;
+      color: var(--bg1-text);
+      display: flex;
+      justify-content: space-between;
+      && button {
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.8rem;
+      }
+    }
   }
 }

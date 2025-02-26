@@ -9,25 +9,12 @@
 <body>
   <header>
     <h1>BookNook</h1>
-    <button id="logout">Logout</button>
+    <div>
+      <button id="add">Add</button>
+      <button id="logout">Logout</button>
+    </div>
   </header>
-  <main><!-- 
-    <section id="formSection">
-      <h2>Add Book</h2>
-      <form>
-        <input type="text" name="title" aria-label="Title" placeholder="Title">
-        <input type="text" name="author" aria-label="Author" placeholder="Author">
-        <input type="text" name="genre" aria-label="Genre" placeholder="Genre">
-        <select name="rating" aria-label="Rating">
-          <option value="1" aria-label="1 out of 5 stars">★☆☆☆☆</option>
-          <option value="2" aria-label="2 out of 5 stars">★★☆☆☆</option>
-          <option value="3" aria-label="3 out of 5 stars" selected>★★★☆☆</option>
-          <option value="4" aria-label="4 out of 5 stars">★★★★☆</option>
-          <option value="5" aria-label="5 out of 5 stars">★★★★★</option>
-        </select>
-        <textarea name="thoughts" aria-label="Thoughts" placeholder="Thoughts"></textarea>
-      </form>
-    </section> -->
+  <main>
     <section id="logSection">
       <h2>Book Log</h2>
       <p>Filters</p>
@@ -38,6 +25,40 @@
       <ul id="logList">
       </ul>
       <span></span>
+    </section>
+    <section class="formSection" id="addBookSection" style="display: none;">
+      <form id="addBook">
+        <div>
+          <h2>Add Book</h2>
+          <Button aria-hidden="Close" type="button" id="closeAdd">&times;</Button>
+        </div>
+        <label>
+          Title:
+          <input type="text" name="title"/>
+        </label>
+        <label>
+          Author:
+          <input type="text" name="author"/>
+        </label>
+        <label>
+          Genre:
+          <input type="text" name="genre"/>
+        </label>
+        <label>
+          Rating:
+          <select name="rating" aria-label="Rating">
+            <option value="1" aria-label="1 out of 5 stars">★☆☆☆☆</option>
+            <option value="2" aria-label="2 out of 5 stars">★★☆☆☆</option>
+            <option value="3" aria-label="3 out of 5 stars" selected>★★★☆☆</option>
+            <option value="4" aria-label="4 out of 5 stars">★★★★☆</option>
+            <option value="5" aria-label="5 out of 5 stars">★★★★★</option>
+          </select>
+        </label>
+        <div>
+          <textarea name="thoughts" aria-label="Thoughts" placeholder="Thoughts"></textarea>
+        </div>
+        <button type="submit">Add Book</button>
+      </form>
     </section>
   </main>
   <script type="module" src="../js/script.js"></script>
