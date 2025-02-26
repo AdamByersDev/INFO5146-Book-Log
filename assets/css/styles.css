@@ -111,6 +111,8 @@ main {
       background-color: var(--bg1);
       color: var(--bg1-text);
       padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
       && div {
         display: grid;
         grid-template-columns: auto 12.2rem;
@@ -150,6 +152,9 @@ main {
             }
           }
         }
+      }
+      && p {
+        flex-grow: 1;
       }
     }
   }
@@ -239,6 +244,129 @@ main {
         justify-content: center;
         font-size: 2.8rem;
       }
+    }
+  }
+}
+
+#chatSection {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 1.6rem;
+  width: 100%;
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  align-content: end;
+  pointer-events: none;
+  && .buttonWrapper {
+    text-align: right;
+    && button {
+      pointer-events: auto;
+      text-align: center;
+      border: 0.2rem solid var(--bg4-text);
+      background-color: var(--bg2);
+      color: var(--bg2-text);
+      padding: 0.8rem;
+      &&:hover {
+        background-color: hsl(19, 64%, 50%);
+      }
+      &&:focus-visible {
+        background-color: hsl(19, 64%, 50%);
+        outline: 0.2rem solid #ffffff;
+      }
+      &&:active {
+        background-color: hsl(19, 64%, 30%);
+      }
+    }
+  }
+  && div:not(:first-of-type) {
+    height: 44rem;
+    pointer-events: auto;
+    flex-grow: 1;
+    background-color: var(--bg1);
+    border: 0.8rem solid var(--bg2);
+    outline: 0.2rem solid var(--bg4-text);
+    padding: 0.8rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.8rem;
+    && #chatMessages {
+      flex-grow: 1;
+      background-color: var(--bg4);
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      gap: 0.8rem;
+      && .aiMessage {
+        border-bottom: 0.4rem solid var(--bg4-text);
+        background-color: #00000010;
+        padding: 0.4rem;
+        margin-right: 2rem;
+      }
+      && .userMessage {
+        border-bottom: 0.4rem solid var(--bg4-text);
+        background-color: #00000010;
+        padding: 0.4rem;
+        margin-left: 2rem;
+        text-align: right;
+      }
+    }
+  }
+  && form {
+    background-color: var(--bg4);
+    color: var(--bg4-text);
+    display: flex;
+    && input {
+      color: var(--bg4-text);
+      flex-grow: 1;
+      resize: none;
+      padding: 0.8rem 0.4rem;
+      flex-grow: 1;
+      color: var(--bg4-text);
+      background-color: transparent;
+      border: transparent;
+      outline: none;
+      &&:hover {
+        background-color: #ffffff44;
+      }
+      &&:focus {
+        background-color: #ffffff80;
+      }
+    }
+    && button {
+      text-align: center;
+      border: 0.2rem solid var(--bg4-text);
+      background-color: var(--bg2);
+      color: var(--bg2-text);
+      padding: 0.8rem;
+      &&:hover {
+        background-color: hsl(19, 64%, 50%);
+      }
+      &&:focus-visible {
+        background-color: hsl(19, 64%, 50%);
+        outline: 0.2rem solid #ffffff;
+      }
+      &&:active {
+        background-color: hsl(19, 64%, 30%);
+      }
+    }
+  }
+  && input {
+    flex-grow: 1;
+    resize: none;
+    padding: 0.8rem 0.4rem;
+    flex-grow: 1;
+    color: var(--bg4-text);
+    background-color: transparent;
+    border: transparent;
+    outline: none;
+    &&:hover {
+      background-color: #ffffff44;
+    }
+    &&:focus {
+      background-color: #ffffff80;
     }
   }
 }

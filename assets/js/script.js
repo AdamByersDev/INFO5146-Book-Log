@@ -1,6 +1,7 @@
 import log from 'loglevel';
 import { db } from './firebase';
-import { addDoc, collection, doc, getDocs, orderBy, query, Timestamp, updateDoc } from '@firebase/firestore';
+import { addDoc, collection, doc, getDocs, getDoc, orderBy, query, Timestamp, updateDoc } from '@firebase/firestore';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 log.setLevel("info");
 log.info("Application started");
@@ -18,16 +19,33 @@ let editGenre;
 let editRating;
 let editThoughts;
 let editId;
+let chatButton;
+let chatBox;
+let chatMessages;
+let messageForm;
 
 let logs;
 let authors = [];
 let genres = [];
+let chatOpen = false;
+let model;
 
 const email = JSON.parse(localStorage.getItem("email"));
 const userId = JSON.parse(localStorage.getItem("userID"));
 
 if(!email){
   window.location.href = "index.html";
+}
+
+async function getApiKey() {
+  let snapshot = await getDoc(doc(db, "apikey", "googlegenai"));
+  let apiKey =  snapshot.data().key;
+  let genAI = new GoogleGenerativeAI(apiKey);
+  model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+}
+
+async function askChatBot(request) {
+  return await model.generateContent(request);
 }
 
 async function getLogsFromFirestore() {
@@ -100,7 +118,7 @@ function updateAuthorFilter(newAuthor) {
     authorFilter.innerHTML = "";
     let unselectedFilter = document.createElement('option');
     unselectedFilter.value = '';
-    unselectedFilter.innerText = "Author"
+    unselectedFilter.innerText = "No Author Filter"
     authorFilter.appendChild(unselectedFilter);
     authors.forEach((author) => {
       let filter = document.createElement('option');
@@ -119,7 +137,7 @@ function updateGenreFilter(newGenre) {
     genreFilter.innerHTML = "";
     let unselectedFilter = document.createElement('option');
     unselectedFilter.value = '';
-    unselectedFilter.innerText = "Genre"
+    unselectedFilter.innerText = "No Genre Filter"
     genreFilter.appendChild(unselectedFilter);
     genres.forEach((genre) => {
       let filter = document.createElement('option');
@@ -306,6 +324,45 @@ function editExistingBook(e) {
   logItem.remove();
 }
 
+async function newChatMessage(e) {
+  e.preventDefault();
+  let formData = new FormData(e.target);
+  let message = Object.fromEntries(formData.entries()).message.trim();
+  if (!(message.length > 0)) {
+    return;
+  }
+  
+  let userMessage = document.createElement('p');
+  userMessage.innerText = sanitizeInput(message);
+  userMessage.classList.add('userMessage');
+  chatMessages.appendChild(userMessage);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  messageForm.reset();
+
+  let aiResponse = "";
+
+  if (message.toLowerCase().startsWith('add ')) {
+    aiResponse = 'Honestly, asking an AI to add a book to a list instead of entering it yourself is unnecesary. Please press "Add" at the top of the screen to add a new book log.';
+  } else if (message.toLowerCase().startsWith('delete ')) {
+    aiResponse = 'Honestly, asking an AI to delete a book from a list instead of deleting it yourself is unnecesary. Please press "Delete" on the entry you wish to delete.';
+  } else if (message.toLowerCase().startsWith('update ') || message.toLowerCase().startsWith('edit ')) {
+    aiResponse = 'Honestly, asking an AI to edit a book in a list instead of editing it yourself is unnecesary. Please press "Edit" on the entry you want to edit.';
+  } else if (message.toLowerCase().startsWith('logout') || message.toLowerCase().startsWith('sign out')) {
+    aiResponse = 'Ok. Goodbye.';
+    localStorage.removeItem("email");
+    window.location.href = "index.html"
+  } else {
+    let response = await askChatBot(message);
+    aiResponse = response.response.candidates[0].content.parts[0].text;
+  }
+
+  let aiMessage = document.createElement('p');
+  aiMessage.innerHTML = sanitizeInput(aiResponse);
+  aiMessage.classList.add('aiMessage');
+  chatMessages.appendChild(aiMessage);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 window.addEventListener('load', () => {
   document.getElementById('logout').addEventListener('click', () => {
     localStorage.removeItem("email");
@@ -349,6 +406,25 @@ window.addEventListener('load', () => {
     editBook.reset();
   })
 
+
+  chatButton = document.getElementById('chatButton');
+  chatButton.addEventListener('click', () => {
+    if (chatOpen) {
+      chatOpen = false;
+      chatButton.innerText = "Open Chat";
+      chatBox.style.display = "";
+    } else {
+      chatOpen = true;
+      chatButton.innerText = "Close Chat";
+      chatBox.style.display = "flex";
+    }
+  });
+  chatBox = document.getElementById('chatBox');
+  chatMessages = document.getElementById('chatMessages');
+  messageForm = document.getElementById('messageForm');
+  messageForm.addEventListener('submit', newChatMessage);
+
+  getApiKey();
   renderLogs();
 });
 
