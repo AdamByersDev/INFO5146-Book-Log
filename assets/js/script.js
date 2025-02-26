@@ -8,8 +8,6 @@ log.info("Application started");
 let logList;
 let authorFilter;
 let genreFilter;
-let add;
-let closeAdd;
 let addBookSection;
 let addBook;
 
@@ -227,10 +225,10 @@ window.addEventListener('load', () => {
     renderLogs();
   });
 
-  add = document.getElementById('add').addEventListener('click', () => {
+  document.getElementById('add').addEventListener('click', () => {
     addBookSection.style.display = 'block';
   });
-  closeAdd = document.getElementById('closeAdd').addEventListener('click', () => {
+  document.getElementById('closeAdd').addEventListener('click', () => {
     addBookSection.style.display = 'none';
     addBook.reset();
   })
