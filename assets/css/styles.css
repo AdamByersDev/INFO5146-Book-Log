@@ -35,6 +35,9 @@ h3 {
   font-size: 2.2rem;
   line-height: 2.4rem;
 }
+button, select {
+  cursor: pointer;
+}
 header {
   position: fixed;
   top: 0;
@@ -124,6 +127,28 @@ main {
         }
         && p:nth-of-type(2) {
           font-weight: bold;
+        }
+        &&:last-of-type {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.8rem;
+          margin-top: 0.4rem;
+          && button {
+            text-align: center;
+            border: 0.2rem solid var(--bg4-text);
+            background-color: var(--bg2);
+            color: var(--bg2-text);
+            padding: 0.8rem;
+            &&:hover {
+              background-color: hsl(19, 64%, 50%);
+            }
+            &&:focus-visible {
+              background-color: hsl(19, 64%, 50%);
+              outline: 0.2rem solid #ffffff;
+            }
+            &&:active {
+              background-color: hsl(19, 64%, 30%);
+            }
+          }
         }
       }
     }
@@ -215,5 +240,11 @@ main {
         font-size: 2.8rem;
       }
     }
+  }
+}
+
+@media (min-width: 720px) {
+  #logSection ul {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }

@@ -1,6 +1,6 @@
 import log from 'loglevel';
 import { db } from './firebase';
-import { addDoc, collection, getDocs, orderBy, query, Timestamp } from '@firebase/firestore';
+import { addDoc, collection, doc, getDocs, orderBy, query, Timestamp, updateDoc } from '@firebase/firestore';
 
 log.setLevel("info");
 log.info("Application started");
@@ -10,6 +10,14 @@ let authorFilter;
 let genreFilter;
 let addBookSection;
 let addBook;
+let editBookSection;
+let editBook;
+let editTitle;
+let editAuthor;
+let editGenre;
+let editRating;
+let editThoughts;
+let editId;
 
 let logs;
 let authors = [];
@@ -34,10 +42,18 @@ async function addLogToFirestore(title, author, genre, rating, thoughts) {
     genre: genre,
     rating: rating,
     thoughts: thoughts,
-    addTime: Timestamp.now()
+    addTime: Timestamp.now(),
+    deleted: false
   });
   return newLog.id;
 }
+
+async function removeLog(id) {
+  updateDoc(doc(db, "logs", userId, "logs", id), {
+    deleted: true
+  });
+  document.getElementById(`id_${id}`).remove()
+};
 
 async function renderLogs() {
   if (!logs) {
@@ -45,16 +61,18 @@ async function renderLogs() {
     let dbData = await getLogsFromFirestore();
     dbData.docs.forEach(book => {
       let data = book.data();
-      logs.push({
-        id: book.id,
-        data: {
-          title: data.title,
-          author: data.author,
-          genre: data.genre,
-          rating: parseInt(data.rating),
-          thoughts: data.thoughts
-        }
-      })
+      if (!data.deleted) {
+        logs.push({
+          id: book.id,
+          data: {
+            title: data.title,
+            author: data.author,
+            genre: data.genre,
+            rating: parseInt(data.rating),
+            thoughts: data.thoughts
+          }
+        })
+      }
     })
   }
   logList.innerHTML = "";
@@ -112,7 +130,7 @@ function updateGenreFilter(newGenre) {
   }
 }
 
-function createBookItem(id, title, author, genre, rating, thoughts, newLog = false) {
+function createBookItem(id, title, author, genre, rating, thoughts, newLog = false, oldElement = false) {
   let itemTitle = document.createElement('h3');
   itemTitle.innerText = title;
 
@@ -141,12 +159,40 @@ function createBookItem(id, title, author, genre, rating, thoughts, newLog = fal
   let itemThoughts = document.createElement('p');
   itemThoughts.innerText = thoughts;
 
+  let deleteItem = document.createElement('button');
+  deleteItem.type = "button";
+  deleteItem.innerText = "Delete";
+  deleteItem.addEventListener('click', () => {
+    if (confirm(`Are you sure you want to delete ${title}.`)) {
+      removeLog(id);
+    }
+  })
+  let editItem = document.createElement('button');
+  editItem.type = "button";
+  editItem.innerText = "Edit";
+  editItem.addEventListener('click', () => {
+    editBookSection.style.display = 'block';
+    editTitle.value = title;
+    editAuthor.value = author;
+    editGenre.value = genre;
+    editRating.value = `${rating}`;
+    editThoughts.value = thoughts;
+    editId.value = id;
+  });
+  let itemButtons = document.createElement('div');
+  itemButtons.append(deleteItem);
+  itemButtons.append(editItem);
+
   let listItem = document.createElement('li');
+  listItem.id = `id_${id}`;
   listItem.appendChild(itemData);
   listItem.appendChild(itemThoughts);
+  listItem.appendChild(itemButtons);
 
   if (newLog) {
     logList.prepend(listItem);
+  } else if (oldElement) {
+    oldElement.after(listItem);
   } else {
     logList.appendChild(listItem);
   }
@@ -183,8 +229,6 @@ async function addNewBook(e) {
     error = true;
   } else if (genre.length < 1) {
     error = true;
-  } else if (thoughts.length < 1) {
-    error = true;
   }
 
   if (error) {
@@ -193,6 +237,8 @@ async function addNewBook(e) {
   }
   addBookSection.style.display = 'none';
   addBook.reset();
+  updateGenreFilter(genre);
+  updateAuthorFilter(author);
   let id = await addLogToFirestore(title, author, genre, rating, thoughts);
   logs.push({
     id: id,
@@ -206,6 +252,58 @@ async function addNewBook(e) {
   });
 
   createBookItem(id, title, author, genre, rating, thoughts, true);
+}
+
+function editExistingBook(e) {
+  e.preventDefault();
+  let formData = new FormData(e.target);
+  let values = Object.fromEntries(formData.entries());
+  let id = values.id;
+  let title = sanitizeInput(values.title.trim());
+  let author = sanitizeInput(values.author.trim());
+  let genre = sanitizeInput(values.genre.trim());
+  let rating = parseInt(values.rating);
+  let thoughts = sanitizeInput(values.thoughts.trim());
+
+  let error = false;
+
+  if (title.length < 1) {
+    error = true;
+  } else if (author.length < 1) {
+    error = true;
+  } else if (genre.length < 1) {
+    error = true;
+  }
+
+  if (error) {
+    alert('You must fill in all fields.');
+    return;
+  }
+
+  updateDoc(doc(db, "logs", userId, "logs", id), {
+    title: title,
+    author: author,
+    genre: genre,
+    rating: rating,
+    thoughts: thoughts
+  });
+
+  logs.find(log => log.id == id).data = {
+    title: title,
+    author: author,
+    genre: genre,
+    rating: rating,
+    thoughts: thoughts
+  };
+
+  updateGenreFilter(genre);
+  updateAuthorFilter(author);
+  let logItem = document.getElementById(`id_${id}`);
+  logItem.id = "tempId";
+  createBookItem(id, title, author, genre, rating, thoughts, false, logItem);
+  editBookSection.style.display = "none";
+  logs.fin
+  logItem.remove();
 }
 
 window.addEventListener('load', () => {
@@ -235,6 +333,21 @@ window.addEventListener('load', () => {
   addBookSection = document.getElementById('addBookSection');
   addBook = document.getElementById('addBook');
   addBook.addEventListener('submit', addNewBook)
+
+
+  editBookSection = document.getElementById('editBookSection');
+  editBook = document.getElementById('editBook');
+  editBook.addEventListener('submit', editExistingBook)
+  editTitle = document.getElementById('editTitle');
+  editAuthor = document.getElementById('editAuthor');
+  editGenre = document.getElementById('editGenre');
+  editRating = document.getElementById('editRating');
+  editThoughts = document.getElementById('editThoughts');
+  editId = document.getElementById('editId');
+  document.getElementById('closeEdit').addEventListener('click', () => {
+    editBookSection.style.display = 'none';
+    editBook.reset();
+  })
 
   renderLogs();
 });

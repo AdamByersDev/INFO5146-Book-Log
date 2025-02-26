@@ -60,6 +60,41 @@
         <button type="submit">Add Book</button>
       </form>
     </section>
+    <section class="formSection" id="editBookSection" style="display: none;">
+      <form id="editBook">
+        <div>
+          <h2>Edit Book</h2>
+          <Button aria-hidden="Close" type="button" id="closeEdit">&times;</Button>
+        </div>
+        <input type="hidden" name="id" id="editId"/>
+        <label>
+          Title:
+          <input type="text" name="title" id="editTitle"/>
+        </label>
+        <label>
+          Author:
+          <input type="text" name="author" id="editAuthor"/>
+        </label>
+        <label>
+          Genre:
+          <input type="text" name="genre" id="editGenre"/>
+        </label>
+        <label>
+          Rating:
+          <select name="rating" aria-label="Rating" id="editRating">
+            <option value="1" aria-label="1 out of 5 stars">★☆☆☆☆</option>
+            <option value="2" aria-label="2 out of 5 stars">★★☆☆☆</option>
+            <option value="3" aria-label="3 out of 5 stars" selected>★★★☆☆</option>
+            <option value="4" aria-label="4 out of 5 stars">★★★★☆</option>
+            <option value="5" aria-label="5 out of 5 stars">★★★★★</option>
+          </select>
+        </label>
+        <div>
+          <textarea name="thoughts" aria-label="Thoughts" placeholder="Thoughts" id="editThoughts"></textarea>
+        </div>
+        <button type="submit">Edit Book</button>
+      </form>
+    </section>
   </main>
   <script type="module" src="../js/script.js"></script>
 </body>
