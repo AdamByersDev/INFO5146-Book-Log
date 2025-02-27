@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg14"
+   sodipodi:docname="logo.svg"
+   width="200"
+   height="200"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview16"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.340725"
+     inkscape:cx="83.093911"
+     inkscape:cy="47.848422"
+     inkscape:window-width="960"
+     inkscape:window-height="1052"
+     inkscape:window-x="960"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg14" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.alb{fill:#0098FF}.alg{fill:#0065A9}</style>
+  </defs>
+  <path
+     id="path168-6"
+     style="display:inline;fill:#46c8f5;stroke-width:0.5;fill-opacity:1"
+     class="alb"
+     d="M 54.124023,22.37207 0,43.019531 V 56.985352 L 27.630858,67.717773 34.560547,55.857422 17.065429,49.980469 43.204101,41.063477 Z"
+     inkscape:label="NLeft" />
+  <path
+     id="path12-7"
+     style="display:inline;fill:#4cad67;stroke-width:0.5;fill-opacity:1"
+     class="alg"
+     d="M 67.195311,0 8.7695313,100 H 21.058932 L 79.484711,0 Z"
+     inkscape:label="NLS"
+     sodipodi:nodetypes="ccccc" />
+  <path
+     class="alb"
+     d="M 32.799999,100 H 21.059401 l 58.425,-100 h 11.7406 z"
+     id="path10-5"
+     style="display:inline;fill:#46c8f5;stroke-width:0.5;fill-opacity:1"
+     sodipodi:nodetypes="ccccc"
+     inkscape:label="NRS" />
+  <path
+     id="path170-3"
+     style="fill:#4cad67;stroke-width:0.5;fill-opacity:1"
+     class="alg"
+     inkscape:label="path170"
+     d="M 72.185546,32.587891 65.43164,44.146484 82.929691,50.025391 56.791015,58.9375 45.871093,77.62793 100,56.980469 V 43.014648 Z" />
+</svg>
